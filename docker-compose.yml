@@ -1,0 +1,19 @@
+version: '3'
+services:
+  listener:
+    container_name: contract-listener
+    build: .
+    ports:
+      - '3000:3000'
+      - '80:80'
+    environment:
+      - PORT=3000
+      - WEBHOOK_URL=http://localhost/webhook
+      - NETWORK_TYPE=evm
+      - CONTRACT_METADATA_URL=http://localhost/NFTStore.json
+      - CONTRACT_ADDRESS=0xFE73076De31136775b3bf02E6E8e70854465b0f9
+      - PROVIDER_URL=https://polygon-mumbai.g.alchemy.com/v2/Cq8D1TZ-Dc0aTzB1ecolEF3tQqHkbGfk
+      - CHECK_INTERVAL=10000
+    volumes:
+      - ./:/app
+    command: npm run watch

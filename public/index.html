@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <p>Logs</p>
+    <div id="logs"></div>
+  </body>
+  <script>
+    const socket = io('http://localhost:3000')
+    socket.on('CONTRACT-EVENT-HANDLED', data => {
+      const container = document.createElement('div');
+      const originaEvent = document.createElement('p');
+      originaEvent.innerHTML = JSON.stringify(data.originalEvent, null, 2);
+      const webhookResponse = document.createElement('p');
+      webhookResponse.innerHTML = JSON.stringify(data.webhookResponse, null, 2);
+      container.append(originaEvent)
+      container.append(webhookResponse)
+      document.getElementById('logs').append(container)
+    })
+  </script>
+</html>
