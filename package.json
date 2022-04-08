@@ -11,7 +11,9 @@
   "author": "Giovanni Pucci",
   "license": "ISC",
   "dependencies": {
+    "@onflow/fcl": "^0.0.78",
     "axios": "^0.26.1",
+    "body-parser": "^1.20.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "node-fetch": "^3.2.3",

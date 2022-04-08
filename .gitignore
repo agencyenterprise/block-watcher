@@ -1,2 +1,3 @@
 node_modules
-blocks/lpb.block
+storage/blocks/*.block
+storage/*.json

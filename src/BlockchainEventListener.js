@@ -11,12 +11,12 @@ module.exports = class BlockchainEventListener {
     console.log(eventType, data)
     io.to('current-contract').emit('CONTRACT-EVENT-HANDLED', data)
   }
-  saveLastProcessedBlock(lastProcessedBlock) {
-    return fs.writeFileSync('./blocks/lpb.block', String(lastProcessedBlock))
+  saveLastProcessedBlock(contractAddress, lastProcessedBlock) {
+    return fs.writeFileSync(`./storage/blocks/${contractAddress}.block`, String(lastProcessedBlock))
   }
-  getLastProcessedBlock() {
+  getLastProcessedBlock(contractAddress) {
     try {
-      const lastBlock = fs.readFileSync('./blocks/lpb.block')
+      const lastBlock = fs.readFileSync(`./storage/blocks/${contractAddress}.block`)
       return parseInt(lastBlock)
     } catch(e) {
       console.log(e.message)
