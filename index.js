@@ -23,4 +23,5 @@ const listener = new chains[process.env.NETWORK_TYPE]({
   contractAddress: process.env.CONTRACT_ADDRESS,
   providerUrl: process.env.PROVIDER_URL,
   checkInterval: process.env.CHECK_INTERVAL,
+  lastProcessedBlock: process.env.LAST_PROCESSED_BLOCK,
 })
