@@ -4,6 +4,7 @@ const Axios = require('axios')
 
 module.exports = class EvmListener extends BlockchainEventListener {
   fromBlock = 0
+  lastProcessedBlock = 0
   webhookUrl = null
   contract = null
   contractAddress = null
@@ -18,8 +19,7 @@ module.exports = class EvmListener extends BlockchainEventListener {
     this.webhookHeaders = data.headers
     this.checkInterval = data.checkInterval
     this.contractAddress = data.contractAddress
-    const _fromBlock = this.getLastProcessedBlock(this.contractAddress)
-    this.fromBlock = _fromBlock || data.lastProcessedBlock || 0
+    this.lastProcessedBlock = data.lastProcessedBlock
   }
   async fetchContractAbi(contractUri) {
     const { data } = await Axios.get(contractUri)
@@ -37,6 +37,8 @@ module.exports = class EvmListener extends BlockchainEventListener {
   }
   async check() {
     try {
+      const _fromBlock = this.getLastProcessedBlock(this.contractAddress)
+      this.fromBlock = _fromBlock || this.lastProcessedBlock || 0
       const events = await this.contract.getPastEvents('allEvents', { fromBlock: this.fromBlock, toBlock: 'latest' })
       await this.process(events)
     } catch(e) {
@@ -47,6 +49,7 @@ module.exports = class EvmListener extends BlockchainEventListener {
   async process(events) {
     for(let event of events) {
       if(event.blockNumber === this.fromBlock) {
+        console.log(event.blockNumber, 'already processed, skipping.');
         continue;
       }
       const response = await Axios.post(this.webhookUrl, event, { headers: this.webhookHeaders })
