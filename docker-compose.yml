@@ -10,7 +10,7 @@ services:
       - PORT=3000
       - WEBHOOK_URL=http://localhost/webhook
       - NETWORK_TYPE=evm
-      - CONTRACT_METADATA_URL=http://localhost/NFTStore.json
+      - CONTRACT_ABI_URL=https://api-testnet.polygonscan.com/api?module=contract&action=getabi&address=0xFE73076De31136775b3bf02E6E8e70854465b0f9&apikey=Cq8D1TZ-Dc0aTzB1ecolEF3tQqHkbGfk
       - CONTRACT_ADDRESS=0xFE73076De31136775b3bf02E6E8e70854465b0f9
       - PROVIDER_URL=https://polygon-mumbai.g.alchemy.com/v2/Cq8D1TZ-Dc0aTzB1ecolEF3tQqHkbGfk
       - CHECK_INTERVAL=10000

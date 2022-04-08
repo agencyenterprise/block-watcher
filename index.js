@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const EvmListener = require('./evm')
+const EvmListener = require('./src/evm')
 const express = require('express')
 const app = express()
 
@@ -19,7 +19,7 @@ app.listen(80, () => console.log('here'))
 
 const listener = new chains[process.env.NETWORK_TYPE]({
   webhookUrl: process.env.WEBHOOK_URL,
-  contractUri: process.env.CONTRACT_METADATA_URL,
+  contractUri: process.env.CONTRACT_ABI_URL,
   contractAddress: process.env.CONTRACT_ADDRESS,
   providerUrl: process.env.PROVIDER_URL,
   checkInterval: process.env.CHECK_INTERVAL,

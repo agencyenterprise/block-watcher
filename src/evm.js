@@ -20,14 +20,15 @@ module.exports = class EvmListener extends BlockchainEventListener {
     console.log(_fromBlock)
     this.fromBlock = _fromBlock || data.lastProcessedBlock || 0
   }
-  async fetchContractMetadata(contractUri) {
+  async fetchContractAbi(contractUri) {
     const { data } = await Axios.get(contractUri)
-    return data
+    return JSON.parse(data.result)
   }
   async init(data) {
     this.setSettings(data)
-    const contractMetadata = await this.fetchContractMetadata(data.contractUri)
-    this.contract = new this.web3.eth.Contract(contractMetadata.abi, data.contractAddress)
+    const contractAbi = await this.fetchContractAbi(data.contractUri)
+    console.log(contractAbi)
+    this.contract = new this.web3.eth.Contract(contractAbi, data.contractAddress)
     this.check()
   }
   async check() {
