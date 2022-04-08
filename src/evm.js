@@ -19,7 +19,6 @@ module.exports = class EvmListener extends BlockchainEventListener {
     this.checkInterval = data.checkInterval
     this.contractAddress = data.contractAddress
     const _fromBlock = this.getLastProcessedBlock(this.contractAddress)
-    console.log(_fromBlock)
     this.fromBlock = _fromBlock || data.lastProcessedBlock || 0
   }
   async fetchContractAbi(contractUri) {
@@ -30,7 +29,6 @@ module.exports = class EvmListener extends BlockchainEventListener {
     try {
       this.setSettings(data)
       const contractAbi = await this.fetchContractAbi(data.contractUri)
-      console.log(contractAbi)
       this.contract = new this.web3.eth.Contract(contractAbi, data.contractAddress)
       this.check()
     } catch(e) {
@@ -48,9 +46,11 @@ module.exports = class EvmListener extends BlockchainEventListener {
   }
   async process(events) {
     for(let event of events) {
+      if(event.blockNumber === this.fromBlock) {
+        continue;
+      }
       const response = await Axios.post(this.webhookUrl, event, { headers: this.webhookHeaders })
       this.emit(event.event, { originalEvent: event, webhookResponse: response.data })
-      console.log(event.blockNumber)
       this.saveLastProcessedBlock(this.contractAddress, event.blockNumber)
     }
   }

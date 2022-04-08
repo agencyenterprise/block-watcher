@@ -1,23 +1,54 @@
 <html>
   <head>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
-    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+      .title {
+        color: #444;
+      }
+      .log-item-container {
+        background-color: #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
-    <p>Logs</p>
-    <div id="logs"></div>
+    <h3 class="title">LOGS</h3>
+    <div id="logs">
+    </div>
   </body>
   <script>
     const socket = io('http://localhost:3000')
     socket.on('CONTRACT-EVENT-HANDLED', data => {
-      const container = document.createElement('div');
-      const originaEvent = document.createElement('p');
-      originaEvent.innerHTML = JSON.stringify(data.originalEvent, null, 2);
-      const webhookResponse = document.createElement('p');
-      webhookResponse.innerHTML = JSON.stringify(data.webhookResponse, null, 2);
-      container.append(originaEvent)
-      container.append(webhookResponse)
-      document.getElementById('logs').append(container)
+      $('#logs').append(`
+        <div class="log-item-container">
+          <div class="log-header">
+            <p class="log-header-title">
+              CONTRACT: ${data.contract} | EVENT: ${data.originalEvent?.event}
+            </p>
+          </div>
+          <div class="log-content">
+            <div class="log-item">
+              <h4 class="log-item-title">Event Data</h4>
+              <pre class="log-item-content">${JSON.stringify(data.originalEvent, null, 2)}</pre>
+            </div>
+            <div class="log-item">
+              <h4 class="log-item-title">Webhook Response Data</h4>
+              <pre class="log-item-content">${JSON.stringify(data.webhookResponse, null, 2)}</pre>
+            </div>
+          </div>
+        </div>
+      `)
+      // const container = document.createElement('div');
+      // const originaEvent = document.createElement('pre');
+      // originaEvent.innerHTML = JSON.stringify(data.originalEvent, null, 2);
+      // const webhookResponse = document.createElement('pre');
+      // webhookResponse.innerHTML = JSON.stringify(data.webhookResponse, null, 2);
+      // container.append(originaEvent)
+      // container.append(webhookResponse)
+      // document.getElementById('logs').append(container)
     })
   </script>
 </html>
