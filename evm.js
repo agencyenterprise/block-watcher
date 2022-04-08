@@ -16,10 +16,11 @@ module.exports = class EvmListener extends BlockchainEventListener {
     this.webhookUrl = data.webhookUrl
     this.webhookHeaders = data.headers
     this.checkInterval = data.checkInterval
+    const _fromBlock = this.getLastProcessedBlock()
+    console.log(_fromBlock)
+    this.fromBlock = _fromBlock || data.lastProcessedBlock || 0
   }
   async fetchContractMetadata(contractUri) {
-    // const result = await fetch(contractUri);
-    // return await result.json()
     const { data } = await Axios.get(contractUri)
     return data
   }
@@ -38,6 +39,8 @@ module.exports = class EvmListener extends BlockchainEventListener {
     for(let event of events) {
       const response = await Axios.post(this.webhookUrl, event, { headers: this.webhookHeaders })
       this.emit(event.event, { originalEvent: event, webhookResponse: response.data })
+      console.log(event.blockNumber)
+      this.saveLastProcessedBlock(event.blockNumber)
     }
   }
 }
