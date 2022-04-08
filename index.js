@@ -50,7 +50,7 @@ app.delete('/contract/:contractAddress', (req, res) => {
   return res.status(200).send({ message: 'Contract Updated' })
 })
 
-app.listen(80, () => console.log('here'))
+app.listen(80, () => console.log(`listening on ${80}`))
 
 const contractListeners = {};
 
@@ -80,8 +80,7 @@ const initContractListeners = () => {
       delete contractListeners[key]
     }
   }
-  
-  console.log(contractListeners)
+
 }
 
 initContractListeners()
