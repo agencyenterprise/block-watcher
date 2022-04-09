@@ -53,7 +53,7 @@ module.exports = class EvmListener extends BlockchainEventListener {
         continue;
       }
       const response = await Axios.post(this.webhookUrl, event, { headers: this.webhookHeaders })
-      this.emit(event.event, { originalEvent: event, webhookResponse: response.data })
+      this.emit(event.event, { contract: this.contractAddress, originalEvent: event, webhookResponse: response.data })
       this.saveLastProcessedBlock(this.contractAddress, event.blockNumber)
     }
   }

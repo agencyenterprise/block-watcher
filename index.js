@@ -10,6 +10,10 @@ const chains = {
   evm: EvmListener,
 }
 
+if (!fs.existsSync('storage/blocks')){
+  fs.mkdirSync('storage/blocks');
+}
+
 app.use(bodyParser.json({ type: 'application/json' }))
 
 app.use(express.static('public'))
