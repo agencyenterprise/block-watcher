@@ -4,46 +4,73 @@ A docker container that simplifies watching, handling (and listening to that han
 
 ## Running the docker image
 
+Create a docker-compose.yml
+
 ### Add contracts on the fly
 
+You can use this API doc to interact with the API:
+
+https://documenter.getpostman.com/view/18943422/UVyxRZqd
+
 ````
-docker run giovannipucci/block-watcher
--p 3001:3001
--p 5043:5043
--v ./storage:/app/storage
+version: '3'
+services:
+  listener:
+    image: agencyenterprisestudio/block-watcher
+    ports:
+      - '3000:3000'
+      - '80:80'
+    environment:
+      - PORT=3000
+      - NETWORK_TYPE=evm
+    volumes:
+      - ./storage:/app/storage
 ````
 
 ### Listen to a single contract
 
 ````
-docker run giovannipucci/block-watcher
--p 3001:3001
--p 5043:5043
--e WEBHOOK_URL={YOUR-APP-WEBHOOK}
--e NETWORK_TYPE={evm}
--e CONTRACT_ABI_URL={LINK-TO-ABI}
--e CONTRACT_ADDRESS={YOUR-CONTRACT-ADDRESS}
--e PROVIDER_URL={YOUR-WEB3-PROVIDER-URL}
--e CHECK_INTERVAL={TIME-IN-MS}
--e LAST_PROCESSED_BLOCK={LAST-PROCESSED-BLOCK-NUMBER}
+version: '3'
+services:
+  listener:
+    image: agencyenterprisestudio/block-watcher
+    ports:
+      - '3000:3000'
+      - '80:80'
+    environment:
+      - PORT=3000
+      - NETWORK_TYPE=evm
+      - WEBHOOK_URL={YOUR-APP-WEBHOOK}
+      - CONTRACT_ABI_URL={LINK-TO-ABI}
+      - CONTRACT_ADDRESS={YOUR-CONTRACT-ADDRESS}
+      - PROVIDER_URL={YOUR-WEB3-PROVIDER-URL}
+      - CHECK_INTERVAL={TIME-IN-MS}
+      - LAST_PROCESSED_BLOCK={LAST-PROCESSED-BLOCK-NUMBER}
+    volumes:
+      - ./storage:/app/storage
 ````
 
 ### All options
 
 ````
-docker run giovannipucci/block-watcher
--p 3001:3001
--p 5043:5043
--e PORT=3001
--e LOG_PORT=5043
--e SOCKET_URL=http://localhost:3001
--e WEBHOOK_URL={YOUR-APP-WEBHOOK}
--e NETWORK_TYPE={evm}
--e CONTRACT_ABI_URL={LINK-TO-ABI}
--e CONTRACT_ADDRESS={YOUR-CONTRACT-ADDRESS}
--e PROVIDER_URL={YOUR-WEB3-PROVIDER-URL}
--e CHECK_INTERVAL={TIME-IN-MS}
--e LAST_PROCESSED_BLOCK={LAST-PROCESSED-BLOCK-NUMBER}
+version: '3'
+services:
+  listener:
+    image: agencyenterprisestudio/block-watcher
+    ports:
+      - '3000:3000'
+      - '80:80'
+    environment:
+      - PORT=3000
+      - NETWORK_TYPE=evm
+      - WEBHOOK_URL={YOUR-APP-WEBHOOK}
+      - CONTRACT_ABI_URL={LINK-TO-ABI}
+      - CONTRACT_ADDRESS={YOUR-CONTRACT-ADDRESS}
+      - PROVIDER_URL={YOUR-WEB3-PROVIDER-URL}
+      - CHECK_INTERVAL={TIME-IN-MS}
+      - LAST_PROCESSED_BLOCK={LAST-PROCESSED-BLOCK-NUMBER}
+    volumes:
+      - ./storage:/app/storage
 ````
 
 ## Available settings | variables
@@ -81,7 +108,7 @@ The time in MS in which the watcher will fetch the contract blocks.
 We're using the socket to listen to events once they're fully processed. Let's say you have an event listener for when a purchase is processed, you can use the socket in the interface to watch it.
 
 ````Javascript
-const socket = io('localhost:3000')
+const socket = io('http://localhost:3000')
 socket.on('CONTRACT_EVENT_HANDLED', event => {
   console.log('event', event)
 })
