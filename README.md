@@ -2,13 +2,23 @@
 
 A docker container that simplifies watching, handling (and listening to that handle with a websocket) and live logging blockchain contract events.
 
-You can use it as docker container or as a installable npm library to extend its implementations.
-
 ## Running the docker image
 
+### Add contracts on the fly
+
 ````
-docker run ae.studio/block-watcher
--e PORT=3000
+docker run giovannipucci/block-watcher
+-p 3001:3001
+-p 5043:5043
+-v ./storage:/app/storage
+````
+
+### Listen to a single contract
+
+````
+docker run giovannipucci/block-watcher
+-p 3001:3001
+-p 5043:5043
 -e WEBHOOK_URL={YOUR-APP-WEBHOOK}
 -e NETWORK_TYPE={evm}
 -e CONTRACT_ABI_URL={LINK-TO-ABI}
@@ -18,7 +28,25 @@ docker run ae.studio/block-watcher
 -e LAST_PROCESSED_BLOCK={LAST-PROCESSED-BLOCK-NUMBER}
 ````
 
-## Available settings
+### All options
+
+````
+docker run giovannipucci/block-watcher
+-p 3001:3001
+-p 5043:5043
+-e PORT=3001
+-e LOG_PORT=5043
+-e SOCKET_URL=http://localhost:3001
+-e WEBHOOK_URL={YOUR-APP-WEBHOOK}
+-e NETWORK_TYPE={evm}
+-e CONTRACT_ABI_URL={LINK-TO-ABI}
+-e CONTRACT_ADDRESS={YOUR-CONTRACT-ADDRESS}
+-e PROVIDER_URL={YOUR-WEB3-PROVIDER-URL}
+-e CHECK_INTERVAL={TIME-IN-MS}
+-e LAST_PROCESSED_BLOCK={LAST-PROCESSED-BLOCK-NUMBER}
+````
+
+## Available settings | variables
 
 ### PORT
 
@@ -30,7 +58,7 @@ The webhook url you can use to send the events for processing. the data sent to 
 
 ### NETWORK_TYPE
 
-The container currently supports evm based networks types and flow. you can set either ```evm``` or ```flow```.
+The container currently supports evm based network types. You can set ```evm```.
 
 ### CONTRACT_ABI_URL
 
