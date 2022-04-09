@@ -10,7 +10,7 @@ You can use it as docker container or as a installable npm library to extend its
 docker run ae.studio/block-watcher
 -e PORT=3000
 -e WEBHOOK_URL={YOUR-APP-WEBHOOK}
--e NETWORK_TYPE={evm|flow}
+-e NETWORK_TYPE={evm}
 -e CONTRACT_ABI_URL={LINK-TO-ABI}
 -e CONTRACT_ADDRESS={YOUR-CONTRACT-ADDRESS}
 -e PROVIDER_URL={YOUR-WEB3-PROVIDER-URL}
