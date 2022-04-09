@@ -14,9 +14,8 @@ app.use(bodyParser.json({ type: 'application/json' }))
 
 app.use(express.static('public'))
 
-app.post('/webhook', (req, res) => {
-  console.log(req.body)
-  return res.status(200).send({})
+app.post('/webhook', (_, res) => {
+  return res.status(200).send({ message: 'Webhook processed.' })
 })
 
 const readSettingsFile = () => {
