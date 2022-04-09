@@ -10,6 +10,10 @@ const chains = {
   evm: EvmListener,
 }
 
+if (!fs.existsSync('storage')){
+  fs.mkdirSync('storage');
+}
+
 if (!fs.existsSync('storage/blocks')){
   fs.mkdirSync('storage/blocks');
 }
